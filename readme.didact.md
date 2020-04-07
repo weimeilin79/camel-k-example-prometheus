@@ -1,6 +1,7 @@
 # Camel K Monitoring Example
- 
+
 ![Camel K CI](https://github.com/openshift-integration/camel-k-example-basic/workflows/Camel%20K%20CI/badge.svg)
+
 This example shows how to configures Camel K and export the Prometheus JMX exporter. Setup Prometheus to scrap the numbers and ultimatly display the result in Grafana.
 
 ## Before you begin
@@ -48,7 +49,7 @@ You need to connect to an OpenShift cluster in order to run the examples.
 
 **Apache Camel K CLI ("kamel")**
 
-Apart from the support provided by the VS Code extension, you also need the Apache Camel K CLI ("kamel") in order to 
+Apart from the support provided by the VS Code extension, you also need the Apache Camel K CLI ("kamel") in order to
 access all Camel K features.
 
 [Check if the Apache Camel K CLI ("kamel") is installed](didact://?commandId=vscode.didact.requirementCheck&text=kamel-requirements-status$$kamel%20version$$Camel%20K%20Client&completion=Apache%20Camel%20K%20CLI%20is%20available%20on%20this%20system. "Tests to see if `kamel version` returns a result"){.didact}
@@ -60,13 +61,21 @@ access all Camel K features.
 
 Go to your working project `userX` where you'll run the integrations.
 
-To create the project, open a terminal tab and type the following command:
+Go to your working project, open a terminal tab and type the following command:
 
 
 ```
-oc project userX
+oc project userX-lab-5
 ```
-([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$oc%20project%20userX&completion=New%20project%20creation. "Opens a new terminal and sends the command above"){.didact})
+([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$oc%20project%20userX-lab-5&completion=Use%20your%20namespace. "Opens a new terminal and sends the command above"){.didact})
+
+You should ensure that the Camel K operator is installed. We'll use the `kamel` CLI to do it:
+
+```
+kamel install --skip-operator-setup --skip-cluster-setup --trait-profile OpenShift
+```
+([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$kamel%20install%20--skip-operator-setup%20--skip-cluster-setup%20--trait-profile%20OpenShift&completion=Camel%20K%20platform%20installation. "Opens a new terminal and sends the command above"){.didact})
+
 
 
 Camel K should have created an IntegrationPlatform custom resource in your project. To verify it:
@@ -80,7 +89,7 @@ If everything is ok, you should see an IntegrationPlatform named `camel-k` with 
 
 ## 2. Setup and start Prometheus
 
-Prometheus is an open-source systems monitoring and alerting toolkit, we will use this to scrap all the running integration metrics. 
+Prometheus is an open-source systems monitoring and alerting toolkit, we will use this to scrap all the running integration metrics.
 Make sure Prometheus operator is installed in your namespace. And now we are ready to start a Prometheus server.
 
 ```
@@ -90,24 +99,24 @@ oc apply -f prometheus.yaml
 
 ## 3. Running a Camel integration
 
-This repository contains two Camel K integrations. One periodically prints 
+This repository contains two Camel K integrations. One periodically prints
 out messages, the other one reads a large file from Azure and process the content in loop
 
-The integration in that prints simple message is in `Basic.java` ([open](didact://?commandId=vscode.openFolder&projectFilePath=Basic.java&completion=Opened%20the%20Basic.java%20file "Opens the Basic.java file"){.didact}).
+The integration in that prints simple message is in `Basic.java` ([open](didact://?commandId=vscode.openFolder&projectFilePath=../camel-k-example-prometheus/Basic.java&completion=Opened%20the%20Basic.java%20file "Opens the Basic.java file"){.didact}).
 
 The Prometheus trait configures the Prometheus JMX exporter and exposes the integration with a Service and a ServiceMonitor resources so that the Prometheus endpoint can be scraped.
 
 ```
 kamel run Basic.java --trait prometheus.enabled=true
 ```
-([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$kamel%20run%20Basic.java%20--trait%20prometheus.enabled=true&completion=Camel%20K%20basic%20integration%20run%20in%20dev%20mode. "Opens a new terminal and sends the command above"){.didact})
+([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$kamel%20run%20Basic.java%20--trait%20prometheus.enabled=true&completion=Camel%20K%20basic%20integration%20run%20with%20prometheus%20enabled. "Opens a new terminal and sends the command above"){.didact})
 
-The integration in that process the large file from Azure is in `Personal.java` ([open](didact://?commandId=vscode.openFolder&projectFilePath=Personal.java&completion=Opened%20the%Personal.java%20file "Opens the Basic.java file"){.didact}).
+The integration in that process the large file from Azure is in `Personal.java` ([open](didact://?commandId=vscode.openFolder&projectFilePath=../camel-k-example-prometheus/Personal.java&completion=Opened%20the%Personal.java%20file "Opens the Basic.java file"){.didact}).
 
 ```
 kamel run Personal.java --trait prometheus.enabled=true
 ```
-([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$kamel%20run%Personal.java%20--trait%20prometheus.enabled=true&completion=Camel%20K%20Personal%20integration%20run%20in%20dev%20mode. "Opens a new terminal and sends the command above"){.didact})
+([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$kamel%20run%Personal.java%20--trait%20prometheus.enabled=true&completion=Camel%20K%20Personal%20integration%20run%20with%20prometheus%20enabled. "Opens a new terminal and sends the command above"){.didact})
 
 If everything is ok, after the build phase finishes, the new two Camel integrations will be running.
 
@@ -121,19 +130,19 @@ Both `basic` and `personal` should be present in the list and it should be in st
 
 ## 4. Setup and start Grafana
 
-Grafana is the visualization and analytics software. It allows user to query, visualize and explore  metrics. 
+Grafana is the visualization and analytics software. It allows user to query, visualize and explore  metrics.
 
 Spin up the Grafana.
 
 ```
-oc create -f grafana/grafana.yaml 
+oc create -f grafana/grafana.yaml
 ```
 ([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$oc%create%20-f%20grafana/grafana.yaml "Opens a new terminal and sends the command above"){.didact})
 
-wait until it done, you will be able to access Grafana via following url 
+wait until it done, you will be able to access Grafana via following url
 
 ```
-echo http://$(oc get route grafana-route -o jsonpath='{.spec.host}') 
+echo http://$(oc get route grafana-route -o jsonpath='{.spec.host}')
 ```
 ([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$echo%20http://$(oc%20get%20route%20grafana-route%20-o%20jsonpath='{.spec.host}') "Opens a new terminal and sends the command above"){.didact})
 
@@ -156,7 +165,7 @@ Click on `Save and Test`. It should return `Data source is working`
 
 Click on the +(Create) on the left menu and select `Import`
 
-On the top right corner, click on `Upload .json File` and choose the `SampleCamelDashboard.json` under `grafana` in this project folder. 
+On the top right corner, click on `Upload .json File` and choose the `SampleCamelDashboard.json` under `grafana` in this project folder.
 
 Click `Import` and you will be able to view all the Camel K metrics.
 
