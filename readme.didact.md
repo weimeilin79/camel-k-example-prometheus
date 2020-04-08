@@ -135,7 +135,7 @@ Spin up the Grafana.
 ```
 oc create -f grafana/grafana.yaml
 ```
-([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$oc%create%20-f%20grafana/grafana.yaml "Opens a new terminal and sends the command above"){.didact})
+([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$oc%20create%20-f%20grafana/grafana.yaml "Opens a new terminal and sends the command above"){.didact})
 
 wait until it done, you will be able to access Grafana via following url
 
