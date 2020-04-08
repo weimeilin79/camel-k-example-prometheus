@@ -114,7 +114,7 @@ The integration in that process the large file from Azure is in `Personal.java` 
 ```
 kamel run Personal.java --trait prometheus.enabled=true
 ```
-([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$kamel%20run%Personal.java%20--trait%20prometheus.enabled=true&completion=Camel%20K%20Personal%20integration%20run%20with%20prometheus%20enabled. "Opens a new terminal and sends the command above"){.didact})
+([^ execute](didact://?commandId=vscode.didact.sendNamedTerminalAString&text=camelTerm$$kamel%20run%20Personal.java%20--trait%20prometheus.enabled=true&completion=Camel%20K%20Personal%20integration%20run%20with%20prometheus%20enabled. "Opens a new terminal and sends the command above"){.didact})
 
 If everything is ok, after the build phase finishes, the new two Camel integrations will be running.
 
