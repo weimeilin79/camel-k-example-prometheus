@@ -62,3 +62,15 @@ spec:
   selector:
     name: grafana
   type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: camel-k-prometheus
+  name: grafana-route
+spec:
+  port:
+    targetPort: grafana
+  to:
+    name: grafana
