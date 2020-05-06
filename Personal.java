@@ -9,7 +9,7 @@ public class Personal extends RouteBuilder {
   
   @BindToRegistry("creds")
     public StorageCredentials datasoure() {
-        return new StorageCredentialsAccountAndKey("camelkmetrics","5Exp6v3efiCVHrIQRYj4oaJxn2Sx6xsiCNDXRPNIT9QcIs7GdtFTWdnqFYq1vNNPWbMFxgU6nU+6uSo21Z4DaQ==");
+        return new StorageCredentialsAccountAndKey("camelkmetrics","YOURKEY");
   }
 
   @Override
